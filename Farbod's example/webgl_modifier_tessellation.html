@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+	<head>
+		<title>Cake in the cup</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	</head>
+
+	<body>
+		
+		<link rel="stylesheet" href="styles.css">
+
+		<div id="info"><a href="http://threejs.org" target="_blank" rel="noopener">[three.js</a> - modifier tessellation]<br>[modified by: My heart is Danish]</div>
+		<div id="container"></div>
+
+		<script src="three.js"></script>
+		<script src="TrackballControls.js"></script>
+		<script src="TessellateModifier.js"></script>
+		<script src="WebGL.js"></script>
+		<script src="stats.min.js"></script>
+
+		<script type="x-shader/x-vertex" id="vertexshader">
+			uniform float amplitude;
+			attribute vec3 customColor;
+			attribute vec3 displacement;
+			varying vec3 vNormal;
+			varying vec3 vColor;
+			void main() {
+				vNormal = normal;
+				vColor = customColor;
+				vec3 newPosition = position + normal * amplitude * displacement;
+				gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+			}
+		</script>
+
+		<script type="x-shader/x-fragment" id="fragmentshader">
+			varying vec3 vNormal;
+			varying vec3 vColor;
+			void main() {
+				const float ambient = 0.4;
+				vec3 light = vec3( 1.0 );
+				light = normalize( light );
+				float directional = max( dot( vNormal, light ), 0.0 );
+				gl_FragColor = vec4( ( directional + ambient ) * vColor, 1.0 );
+			}
+		</script>
+
+
+		<script>
+		if ( WEBGL.isWebGLAvailable() === false ) {
+			document.body.appendChild( WEBGL.getWebGLErrorMessage() );
+		}
+
+		let renderer, scene, camera, stats;
+		let controls;
+		let mesh, uniforms;
+		let WIDTH = window.innerWidth,
+			HEIGHT = window.innerHeight;
+
+		let loader = new THREE.FontLoader();
+		loader.load( 'helvetiker_bold.typeface.json', function ( font ) {
+			init( font );
+			animate();
+		} );
+
+		function init( font ) {
+
+			camera = new THREE.PerspectiveCamera( 40, WIDTH / HEIGHT, 1, 10000 );
+			camera.position.set( - 220, 40, 220 );
+			controls = new THREE.TrackballControls( camera );
+			scene = new THREE.Scene();
+
+			let geometry = new THREE.TextGeometry( "Sometimes,\nI just need\na < br >", {
+
+				font: font,
+				size: 25,
+				height: 5,
+				curveSegments: 3,
+				bevelThickness: 2,
+				bevelSize: 1,
+				bevelEnabled: true
+
+			} );
+
+			geometry.center();
+
+			let tessellateModifier = new THREE.TessellateModifier( 8 );
+
+			for ( let i = 0; i < 6; i ++ ) {
+
+				tessellateModifier.modify( geometry );
+
+			}
+
+			//
+
+			geometry = new THREE.BufferGeometry().fromGeometry( geometry );
+
+			let numFaces = geometry.attributes.position.count / 3;
+
+			let colors = new Float32Array( numFaces * 3 * 3 );
+			let displacement = new Float32Array( numFaces * 3 * 3 );
+
+			let color = new THREE.Color();
+
+			for ( let f = 0; f < numFaces; f ++ ) {
+
+				let index = 9 * f;
+
+				let d = 10 * ( 0.5 - Math.random() );
+
+				for ( let i = 0; i < 3; i ++ ) {
+
+				let h = 10 * Math.random();
+				let s = 0.7 + 0.5 * Math.random();
+
+				let l = 0.3 + 0.5 * Math.random();
+
+				color.setHSL( h, s, l );
+
+				colors[ index + ( 3 * i ) ] = color.r;
+				colors[ index + ( 3 * i ) + 1 ] = color.g;
+				colors[ index + ( 3 * i ) + 2 ] = color.b;
+
+				displacement[ index + ( 3 * i ) ] = d;
+				displacement[ index + ( 3 * i ) + 1 ] = d;
+				displacement[ index + ( 3 * i ) + 2 ] = d;
+
+				}
+
+			}
+
+			geometry.addAttribute( 'customColor', new THREE.BufferAttribute( colors, 3 ) );
+			geometry.addAttribute( 'displacement', new THREE.BufferAttribute( displacement, 3 ) );
+
+			uniforms = {
+
+				amplitude: { value: 0.0 }
+
+			};
+
+			let shaderMaterial = new THREE.ShaderMaterial( {
+
+				uniforms: uniforms,
+				vertexShader: document.getElementById( 'vertexshader' ).textContent,
+				fragmentShader: document.getElementById( 'fragmentshader' ).textContent
+
+			} );
+
+			mesh = new THREE.Mesh( geometry, shaderMaterial );
+
+			scene.add( mesh );
+
+			renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
+			renderer.setPixelRatio( window.devicePixelRatio );
+			renderer.setSize( WIDTH, HEIGHT );
+
+			let container = document.getElementById( 'container' );
+			container.appendChild( renderer.domElement );
+
+			/* stats = new Stats();
+			container.appendChild( stats.dom ); */
+
+			window.addEventListener( 'resize', onWindowResize, false );
+
+		}
+
+		function onWindowResize() {
+
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+
+			renderer.setSize( window.innerWidth, window.innerHeight );
+
+		}
+
+		function animate() {
+
+			requestAnimationFrame( animate );
+
+			render();
+
+			//stats.update();
+
+		}
+
+		function render() {
+
+			let time = Date.now() * 0.001;
+
+			uniforms.amplitude.value = 1.0 + Math.sin( time * 0.5 );
+
+			controls.update();
+
+			renderer.render( scene, camera );
+
+		}
+
+	</script>
+
+</body>
+
+</html>
