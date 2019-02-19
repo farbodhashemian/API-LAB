@@ -9,18 +9,21 @@
 	</head>
 
 	<body>
-		
+		<!--CSS link-->
 		<link rel="stylesheet" href="styles.css">
 
+		<!--Link to three.js homepage and title for example-->
 		<div id="info"><a href="http://threejs.org" target="_blank" rel="noopener">[three.js</a> - modifier tessellation]<br>[modified by: My heart is Danish]</div>
 		<div id="container"></div>
 
+		<!--javascript links-->
 		<script src="three.js"></script>
 		<script src="TrackballControls.js"></script>
 		<script src="TessellateModifier.js"></script>
 		<script src="WebGL.js"></script>
 		<script src="stats.min.js"></script>
 
+		<!--Script for shader and vertex-->
 		<script type="x-shader/x-vertex" id="vertexshader">
 			uniform float amplitude;
 			attribute vec3 customColor;
@@ -35,6 +38,7 @@
 			}
 		</script>
 
+		<!--Script for shader and vertex-->
 		<script type="x-shader/x-fragment" id="fragmentshader">
 			varying vec3 vNormal;
 			varying vec3 vColor;
@@ -53,18 +57,21 @@
 			document.body.appendChild( WEBGL.getWebGLErrorMessage() );
 		}
 
+		// Variables for renderer, scene, camera, stats, controls, mesh, uniforms, width & height.
 		let renderer, scene, camera, stats;
 		let controls;
 		let mesh, uniforms;
 		let WIDTH = window.innerWidth,
 			HEIGHT = window.innerHeight;
 
+		// Load font for TextGeometry.
 		let loader = new THREE.FontLoader();
 		loader.load( 'helvetiker_bold.typeface.json', function ( font ) {
 			init( font );
 			animate();
 		} );
 
+		// Initialize camera, perspective, position, controls and scene.
 		function init( font ) {
 
 			camera = new THREE.PerspectiveCamera( 40, WIDTH / HEIGHT, 1, 10000 );
@@ -72,6 +79,7 @@
 			controls = new THREE.TrackballControls( camera );
 			scene = new THREE.Scene();
 
+			// Create TextGeometry variable.
 			let geometry = new THREE.TextGeometry( "Sometimes,\nI just need\na < br >", {
 
 				font: font,
@@ -103,6 +111,8 @@
 			let colors = new Float32Array( numFaces * 3 * 3 );
 			let displacement = new Float32Array( numFaces * 3 * 3 );
 
+
+			// Colors
 			let color = new THREE.Color();
 
 			for ( let f = 0; f < numFaces; f ++ ) {
@@ -153,15 +163,13 @@
 
 			scene.add( mesh );
 
+			// Added alpha:true to make background transparent and allow CSS linear gradient to show.
 			renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
 			renderer.setPixelRatio( window.devicePixelRatio );
 			renderer.setSize( WIDTH, HEIGHT );
 
 			let container = document.getElementById( 'container' );
 			container.appendChild( renderer.domElement );
-
-			/* stats = new Stats();
-			container.appendChild( stats.dom ); */
 
 			window.addEventListener( 'resize', onWindowResize, false );
 
@@ -176,16 +184,17 @@
 
 		}
 
+
+		// Animate
 		function animate() {
 
 			requestAnimationFrame( animate );
 
 			render();
 
-			//stats.update();
-
 		}
 
+		// Render
 		function render() {
 
 			let time = Date.now() * 0.001;
