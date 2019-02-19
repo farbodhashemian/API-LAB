@@ -12,11 +12,11 @@
 		<!--CSS link-->
 		<link rel="stylesheet" href="styles.css">
 
-		<!--Link to three.js homepage and title for example-->
+		<!--Link to three.js homepage opening in a new tab and title for the example-->
 		<div id="info"><a href="http://threejs.org" target="_blank" rel="noopener">[three.js</a> - modifier tessellation]<br>[modified by: My heart is Danish]</div>
 		<div id="container"></div>
 
-		<!--javascript links-->
+		<!--javascript links to three.js library, controls, the example, WebGL-->
 		<script src="three.js"></script>
 		<script src="TrackballControls.js"></script>
 		<script src="TessellateModifier.js"></script>
@@ -102,8 +102,6 @@
 
 			}
 
-			//
-
 			geometry = new THREE.BufferGeometry().fromGeometry( geometry );
 
 			let numFaces = geometry.attributes.position.count / 3;
@@ -118,22 +116,18 @@
 			for ( let f = 0; f < numFaces; f ++ ) {
 
 				let index = 9 * f;
-
 				let d = 10 * ( 0.5 - Math.random() );
 
 				for ( let i = 0; i < 3; i ++ ) {
 
 				let h = 10 * Math.random();
 				let s = 0.7 + 0.5 * Math.random();
-
 				let l = 0.3 + 0.5 * Math.random();
 
 				color.setHSL( h, s, l );
-
 				colors[ index + ( 3 * i ) ] = color.r;
 				colors[ index + ( 3 * i ) + 1 ] = color.g;
 				colors[ index + ( 3 * i ) + 2 ] = color.b;
-
 				displacement[ index + ( 3 * i ) ] = d;
 				displacement[ index + ( 3 * i ) + 1 ] = d;
 				displacement[ index + ( 3 * i ) + 2 ] = d;
@@ -160,10 +154,9 @@
 			} );
 
 			mesh = new THREE.Mesh( geometry, shaderMaterial );
-
 			scene.add( mesh );
 
-			// Added alpha:true to make background transparent and allow CSS linear gradient to show.
+			// Added "alpha: true" to make background transparent and allow CSS linear gradient to show.
 			renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
 			renderer.setPixelRatio( window.devicePixelRatio );
 			renderer.setSize( WIDTH, HEIGHT );
@@ -189,7 +182,6 @@
 		function animate() {
 
 			requestAnimationFrame( animate );
-
 			render();
 
 		}
@@ -198,11 +190,8 @@
 		function render() {
 
 			let time = Date.now() * 0.001;
-
 			uniforms.amplitude.value = 1.0 + Math.sin( time * 0.5 );
-
 			controls.update();
-
 			renderer.render( scene, camera );
 
 		}
