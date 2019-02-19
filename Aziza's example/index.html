@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>three.js - moon</title>
+
+    <style>
+        /* CSS */
+        body {
+            overflow: hidden;
+            margin: 0;
+        }
+
+        canvas {
+            background: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- CANVAS -->
+    <canvas id="myCanvas"></canvas>
+
+    <!-- JS FILE -->
+    <script src=./master/master.js> </script> <script>
+
+        //RENDERER
+        var renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('myCanvas'), antialias: true });
+        //document.body.appendChild(renderer.domElement);
+        renderer.setClearColor(0xffffff, 1);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        //CAMERA
+        var camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 3000);
+        //camera.position.set(0, 0, 0);
+
+        //SCENE
+        var scene = new THREE.Scene();
+
+        //LIGHTS
+        var light = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(light);
+
+        var light1 = new THREE.PointLight(0xffffff, 0.5);
+        scene.add(light1);
+
+        //SPHERE
+        var geometry = new THREE.SphereBufferGeometry(5, 32, 32);
+        var material = new THREE.MeshLambertMaterial({ color: 0xffffff });
+        var mesh = new THREE.Mesh(geometry, material);
+
+
+        //SPHERE POSITION AND ADD TO SCENE
+        mesh.position.set(0, 0, -40);
+        scene.add(mesh);
+
+        //MESH TEXTURE - MOON
+        mesh.material.map = THREE.ImageUtils.loadTexture(src = "./pics/supermoon.jpg");
+        mesh.material.needsUpdate = true;
+
+        //BACKGROUND
+        var texture = THREE.ImageUtils.loadTexture('./pics/galaxy.png');
+        var backgroundMesh = new THREE.Mesh(
+            new THREE.PlaneGeometry(2, 2.4, 1),
+            new THREE.MeshBasicMaterial({
+                map: texture
+            }));
+
+        backgroundMesh.material.depthTest = false;
+        backgroundMesh.material.depthWrite = false;
+
+        // BACKGROUND VARIABLES
+        var backgroundScene = new THREE.Scene();
+        var backgroundCamera = new THREE.Camera();
+        backgroundScene.add(backgroundCamera);
+        backgroundScene.add(backgroundMesh);
+
+        requestAnimationFrame(render);
+
+        //RENDER LOOP
+        function render() {
+
+            //SPHERE ROTATION
+            mesh.rotation.x += 0.002;
+            mesh.rotation.y += 0.002;
+
+            //RENDER BACKGROUND
+            renderer.autoClear = false;
+            renderer.clear();
+            renderer.render(backgroundScene, backgroundCamera);
+
+            renderer.render(scene, camera);
+            requestAnimationFrame(render);
+        }
+
+    </script>
+
+</body>
+
+</html>
