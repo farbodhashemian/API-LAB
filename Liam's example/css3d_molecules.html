@@ -10,19 +10,20 @@
 			}
 
 			body {
-				background-color: #050505;
-				background: radial-gradient(ellipse at center,  rgba(43,45,48,1) 0%,rgba(0,0,0,1) 100%);
+				background-color: rgb(28,28,28);
 
 				margin: 0;
 				font-family: Arial;
 				overflow: hidden;
 			}
 
-			a {
+			/* a {
 				color: #ffffff;
-			}
+			} */
 
-			#info {
+
+			/*No need for this menu*/
+			/* #info {
 				position: absolute;
 				top: 0px;
 				width: 100%;
@@ -33,22 +34,23 @@
 				font-weight: bold;
 				text-align: center;
 				z-index: 1;
-			}
+			} */
 
 			#menu {
 				position: absolute;
-				bottom: 20px;
-				width: 100%;
-				text-align: center;
+				top: 10px;
+				width: 120px;
 				padding: 0;
-				margin: 0;
+				margin: 0;	
 			}
+			
+	
 
 			#topmenu {
 				position: absolute;
 				top: 10px;
-				right: 10px;
-				width: 100%;
+				right: 50px;
+				width: 20px;
 				text-align: right;
 				padding: 0;
 				margin: 0;
@@ -76,6 +78,8 @@
 				background: #eee;
 				display: block;
 			}
+			
+
 		</style>
 	</head>
 	<body>
@@ -85,6 +89,7 @@
 		<script src="TrackballControls.js"></script>
 		<script src="CSS3DRenderer.js"></script>
 		<script src="PDBLoader.js"></script>
+
 
 
 
@@ -118,15 +123,37 @@
 
 			var visualizationType = 2;
 
+
+
+
+
+			//upload the molecules files here...
 			var MOLECULES = {
-				"Methane": "methane.pdb",
-				"Ethane": "ethane.pdb",
-				"Propane": "propane.pdb",
-				"Butane": "butane.pdb",
-				"Pentane": "pentane.pdb",
-				"Water": "water.pdb",
+				"1 Triangle": "1triangle.pdb",
+				"2 Triangles": "2triangles.pdb",
+				"3 Triangles": "3triangles.pdb",
+				"Many triangles": "triangles.pdb",
+
+				"1 Square": "1square.pdb",
+				"2 Squares": "2squares.pdb",
+				"3 Squares": "3squares.pdb",
+				"Many Squares": "squares.pdb",
+
+				"1 Pentagon": "1pentagon.pdb",
+				"2 Pentagons": "2pentagons.pdb",
+				"3 Pentagons": "3pentagons.pdb",
+				"4 Pentagons": "4pentagons.pdb",
+				"Many Pentagons": "pentagons.pdb",
+
+				"1 Hexagon": "1hexagon.pdb",
+				"2 Hexagons": "2hexagons.pdb",
+				"3 Hexagons": "3hexagons.pdb",
+				"4 Hexagons": "4hexagons.pdb",
+				"Many Hexagons": "hexagons.pdb",
+
 
 			};
+
 
 			var loader = new THREE.PDBLoader();
 			var colorSpriteMap = {};
@@ -168,6 +195,7 @@
 
 				};
 
+				//Change the shape of the atoms
 				baseSprite.src = 'sprites/ball.png';
 
 				//
@@ -175,6 +203,8 @@
 				window.addEventListener( 'resize', onWindowResize, false );
 
 			}
+
+
 
 			//
 
@@ -201,6 +231,7 @@
 					button.addEventListener( 'click', generateButtonCallback( url ), false );
 
 				}
+
 
 				var b_a = document.getElementById( "b_a" );
 				var b_b = document.getElementById( "b_b" );
@@ -293,8 +324,7 @@
 
 			}
 
-			//
-
+			//Change the colour of the atoms
 			function colorify( ctx, width, height, color ) {
 
 				var r = color.r, g = color.g, b = color.b;
@@ -546,8 +576,12 @@
 				renderer.render( scene, camera );
 
 			}
+			
 
-    </script>
+	</script>
+	
+
+
   </body>
 
 </html>
