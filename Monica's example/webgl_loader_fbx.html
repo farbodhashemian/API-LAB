@@ -34,15 +34,15 @@
 			Character and animation from <a href="https://www.mixamo.com/" target="_blank" rel="noopener">Mixamo</a>
 		</div>
 
-		<script src="../build/three.js"></script>
+		<script src="three.js"></script>
 
-		<script src="js/libs/inflate.min.js"></script>
-		<script src="js/loaders/FBXLoader.js"></script>
+		<script src="inflate.min.js"></script>
+		<script src="FBXLoader.js"></script>
 
-		<script src="js/controls/OrbitControls.js"></script>
+		<script src="OrbitControls.js"></script>
 
-		<script src="js/WebGL.js"></script>
-		<script src="js/libs/stats.min.js"></script>
+		<script src="WebGL.js"></script>
+		<script src="stats.min.js"></script>
 
 		<script>
 
@@ -107,7 +107,7 @@
 				// model 
 				var loader = new THREE.FBXLoader();
 				//in the next line is where I changed the original .fbx with the stormtrooper
-				loader.load( 'models/fbx/silly_dancing.fbx', function ( object ) {
+				loader.load( 'silly_dancing.fbx', function ( object ) {
 
 
 					mixer = new THREE.AnimationMixer( object );
