@@ -8,6 +8,7 @@ Designers have the chance of expressing such complicated and foreign subject in 
 I could find a very big data bases with a lot of chemical molecules' structures, in the same format that the example is using (pdb). Though, as I decided to use a customized geometrical molecules, I had to find something else. That is when I found https://www.mn-am.com/online_demos/corina_demo_interactive , which enabled me to make my own chemical molecules anf export them as pdb files that I could use in my example. 
 
 Adding the molecule was very easy, I had to place them in the folder "molecules/models", then add them to my JSON object MOLECULES. Making vertical lists and changing background color and bonds color was done in CSS. There is a possibility to change the shape of the atoms by replacing ball.png to any of the other shapes in the "sprites" file.
+
 =======
 
 
