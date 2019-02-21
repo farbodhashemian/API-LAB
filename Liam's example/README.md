@@ -10,4 +10,4 @@ I could find a very big data bases with a lot of chemical molecules' structures,
 Adding the molecule was very easy, I had to place them in the folder "molecules/models", then add them to my JSON object MOLECULES. Making vertical lists and changing background color and bonds color was done in CSS. There is a possibility to change the shape of the atoms by replacing ball.png to any of the other shapes in the "sprites" file.
 =======
 
->>>>>>> 1de1653b3ee7a52ad5a7962e95dce1f1bcc64ffa
+
