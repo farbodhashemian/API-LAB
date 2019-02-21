@@ -75,13 +75,14 @@
 		function init( font ) {
 
 			camera = new THREE.PerspectiveCamera( 40, WIDTH / HEIGHT, 1, 10000 );
-			camera.position.set( - 220, 40, 220 );
+			camera.position.set( - 220, 40, 220 ); //Changed the camera angle.
 			controls = new THREE.TrackballControls( camera );
 			scene = new THREE.Scene();
 
-			// Create TextGeometry variable.
+			// Create TextGeometry object.
 			let geometry = new THREE.TextGeometry( "Sometimes,\nI just need\na < br >", {
 
+				//Modified these values.
 				font: font,
 				size: 25,
 				height: 5,
@@ -110,7 +111,7 @@
 			let displacement = new Float32Array( numFaces * 3 * 3 );
 
 
-			// Colors
+			// Colors using hsl.
 			let color = new THREE.Color();
 
 			for ( let f = 0; f < numFaces; f ++ ) {
@@ -153,10 +154,11 @@
 
 			} );
 
+			// Add mesh.
 			mesh = new THREE.Mesh( geometry, shaderMaterial );
 			scene.add( mesh );
 
-			// Added "alpha: true" to make background transparent and allow CSS linear gradient to show.
+			// I added "alpha: true" to make background transparent and allow CSS linear gradient to function/be visible.
 			renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
 			renderer.setPixelRatio( window.devicePixelRatio );
 			renderer.setSize( WIDTH, HEIGHT );
